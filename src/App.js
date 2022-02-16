@@ -4,23 +4,25 @@ import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
 import ContactList from './components/ContactList';
 
+// {id: '1', name: "Your Contact", number: '12345'}
+
 class App extends Component {
   state = {
-    contacts: [
-    ],
+    contacts: [],
     filter: '',
   };
 
   componentDidMount() {
-    this.setState({ contacts: JSON.parse(localStorage.getItem('contacts')) });
-    console.log(localStorage.getItem('contacts'))
-    if (this.state.contacts = []) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
+    const contacts = localStorage.getItem('contacts')
+    const parsedContacts = JSON.parse(contacts);
+
+    if (contacts) this.setState({ contacts: parsedContacts });
+    console.log(localStorage.getItem('contacts'));
+    
   }
 
-  componentDidUpdate() {
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.contacts !== prevState.contacts) {localStorage.setItem('contacts', JSON.stringify(this.state.contacts))};
   }
 
   deleteContact = event => {
